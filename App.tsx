@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import { 
   useFonts, 
@@ -13,9 +13,15 @@ export default function App() {
       style={{ 
         flex:1, 
         alignItems:'center', 
-        justifyContent:'center'
+        justifyContent:'center',
+        backgroundColor: '#202024'
       }}
     >
+      <StatusBar 
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
       {fontsLoaded ? <Text>Ignite Gym</Text> : <View />}
     </View>
   );
