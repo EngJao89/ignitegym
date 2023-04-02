@@ -41,11 +41,16 @@ export function SignIn(){
         />
 
         <Button title="Acesse"/>
+      </Center>
 
+      <Center mt={24}>
+        <Text color="gray.100" fontSize="sm" mb={3} fontFamily="body">
+          Ainda não tem acesso?
+        </Text>
         <Button 
-          title="Criar Conta" 
-          variant="outline"
-        />
+            title="Criar Conta" 
+            variant="outline"
+          />
       </Center>
     </VStack>
   );
