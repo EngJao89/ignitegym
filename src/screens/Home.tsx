@@ -24,9 +24,9 @@ export function Home(){
         keyExtractor={item => item}
         renderItem={({item}) => (
           <Group 
-            name={item}
-            isActive={groupSelected === item}
-            onPress={() => setGroupSelected(item)}
+          name={item}
+          isActive={groupSelected.toLocaleUpperCase() === item.toLocaleUpperCase()}
+          onPress={() => setGroupSelected(item)}
           />
         )}
         horizontal
