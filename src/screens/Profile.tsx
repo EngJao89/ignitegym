@@ -15,6 +15,9 @@ export function Profile(){
   const [userPhoto, setUserPhoto] = useState('https://github.com/EngJao89.png');
 
   async function handleUserPhotoSelected(){
+    setPhotoIsLoading(true);
+
+    try{
     const photoSelected = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
@@ -26,7 +29,14 @@ export function Profile(){
       return;
     }
 
-    setUserPhoto(photoSelected.assets[0].uri);
+    if(photoSelected.uri) {
+      setUserPhoto(photoSelected.assets[0].uri);
+    }
+    } catch(error){
+      console.log(error);
+    } finally{
+      setPhotoIsLoading(false);
+    }
   }
 
   return(
