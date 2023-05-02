@@ -4,6 +4,7 @@ import {  FlatList, Heading, HStack, Text, useToast, VStack } from 'native-base'
 
 import { api } from '@services/api';
 import { AppError } from '@utils/AppError';
+import { ExerciseDTO } from '@dtos/ExerciseDTO';
 
 import { Group } from '@components/Group';
 import { HomeHeader } from '@components/HomeHeader';
@@ -13,12 +14,8 @@ import { AppNavigatorRoutesProps } from '@routes/app.routes';
 
 export function Home(){
   const [groups, setGroups] = useState<string[]>([]);
-  const [exercises, setExercises] = useState([
-    'Puxada Frontal', 
-    'Remada curvada', 
-    'Remada Unilateral', 
-    'Levantamento terra'
-  ]);
+  const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
+
   const [groupSelected, setGroupSelected] = useState('costas');
 
   const toast = useToast();
@@ -110,7 +107,7 @@ export function Home(){
 
         <FlatList 
           data={exercises}
-          keyExtractor={item => item}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <ExerciseCard 
               onPress={() => handleOpenExerciseDetails()}
