@@ -111,6 +111,7 @@ export function Home(){
           renderItem={({ item }) => (
             <ExerciseCard 
               onPress={() => handleOpenExerciseDetails()}
+              data={item}
             />
           )}
           showsVerticalScrollIndicator={false}
