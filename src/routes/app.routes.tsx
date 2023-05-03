@@ -7,9 +7,9 @@ import HistorySvg from '@assets/history.svg';
 import ProfileSvg from '@assets/profile.svg';
 
 import { Home } from '@screens/Home';
+import { Exercise } from '@screens/Exercise';
 import { History } from '@screens/History';
 import { Profile } from '@screens/Profile';
-import { Exercise } from '@screens/Exercise';
 
 type AppRoutes = {
   home: undefined;
@@ -24,12 +24,13 @@ export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
 
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
-export function AppRoutes(){
+export function AppRoutes() {
+
   const { sizes, colors } = useTheme();
 
   const iconSize = sizes[6];
 
-  return(
+  return (
     <Navigator screenOptions={{ 
       headerShown: false,
       tabBarShowLabel: false,
@@ -43,8 +44,8 @@ export function AppRoutes(){
         paddingTop: sizes[6]
       }
     }}>
-      <Screen
-        name="home"
+      <Screen 
+        name='home'
         component={Home}
         options={{
           tabBarIcon: ({ color,  }) => (
@@ -53,8 +54,8 @@ export function AppRoutes(){
         }}
       />
 
-      <Screen
-        name="history"
+      <Screen 
+        name='history'
         component={History}
         options={{
           tabBarIcon: ({ color }) => (
@@ -63,8 +64,8 @@ export function AppRoutes(){
         }}
       />
 
-      <Screen
-        name="profile"
+      <Screen 
+        name='profile'
         component={Profile}
         options={{
           tabBarIcon: ({ color }) => (
@@ -73,11 +74,11 @@ export function AppRoutes(){
         }}
       />
 
-      <Screen
-        name="exercise"
+      <Screen 
+        name='exercise'
         component={Exercise}
         options={{ tabBarButton: () => null }}
       />
     </Navigator>
-  )
+  );
 }
