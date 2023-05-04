@@ -1,8 +1,19 @@
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Center, ScrollView, VStack, Skeleton, Text, Heading, useToast } from 'native-base';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import * as yup from 'yup';
+
+
+import defaulUserPhotoImg from '@assets/userPhotoDefault.png'; 
+
+import { api } from '@services/api';
+import { AppError } from '@utils/AppError';
+
+import { useAuth } from '@hooks/useAuth';
 
 import { ScreenHeader } from '@components/ScreenHeader';
 import { UserPhoto } from '@components/UserPhoto';
@@ -11,10 +22,27 @@ import { Button } from '@components/Button';
 
 const PHOTO_SIZE = 33;
 
+type FormDataProps = {
+  name: string;
+  email: string;
+  password: string;
+  old_password: string;
+  confirm_password: string;
+}
+
 export function Profile(){
+  const [isUpdating, setIsUpdating] = useState(false);
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
   const [userPhoto, setUserPhoto] = useState('https://github.com/EngJao89.png');
+
   const toast = useToast();
+  const { user } = useAuth();
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({ 
+    defaultValues: { 
+      name: user.name,
+      email: user.email
+    },
+  });
 
   async function handleUserPhotoSelected(){
     setPhotoIsLoading(true);
