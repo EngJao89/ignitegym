@@ -4,6 +4,7 @@ import { Heading, VStack, SectionList, Text, useToast } from 'native-base';
 
 import { api } from '@services/api';
 import { AppError } from '@utils/AppError';
+import { HistoryByDayDTO } from '@dtos/HistoryByDayDTO';
 
 import { HistoryCard } from '@components/HistoryCard';
 import { ScreenHeader } from '@components/ScreenHeader';
@@ -11,16 +12,7 @@ import { Loading } from '@components/Loading';
 
 export function History(){
   const [isLoading, setIsLoading] = useState(true);
-  const [exercises, setExercises] = useState([
-    {
-      title: "26.08.23",
-      data: ['Puxada Frontal', 'Remada Unilateral']
-    },
-    {
-      title: "27.08.23",
-      data: ["Puxada Fronta"]
-    },
-  ]);
+  const [exercises, setExercises] = useState<HistoryByDayDTO[]>([]);
 
   const toast = useToast();
 
@@ -57,7 +49,7 @@ export function History(){
 
       <SectionList 
         sections={exercises}
-        keyExtractor={item => item}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => <HistoryCard /> }
         renderSectionHeader={({ section }) => (
           <Heading color="gray.200" fontSize="md" mt={10} mb={3} fontFamily="heading">
