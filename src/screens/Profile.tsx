@@ -30,6 +30,30 @@ type FormDataProps = {
   confirm_password: string;
 }
 
+const profileSchema = yup.object({
+  name: yup
+    .string()
+    .required('Informe o nome'),
+  password: yup
+    .string()
+    .min(6, 'A senha deve ter pelo menos 6 dígitos.')
+    .nullable()
+    .transform((value) => !!value ? value : null),
+  confirm_password: yup
+    .string()
+    .nullable()
+    .transform((value) => !!value ? value : null)
+    .oneOf([yup.ref('password'), null], 'A confirmação de senha não confere.')
+    .when('password', {
+      is: (Field: any) => Field,
+      then: yup
+        .string()
+        .nullable()
+        .required('Informe a confirmação da senha.')
+        .transform((value) => !!value ? value : null)
+    })
+});
+
 export function Profile(){
   const [isUpdating, setIsUpdating] = useState(false);
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
@@ -42,6 +66,7 @@ export function Profile(){
       name: user.name,
       email: user.email
     },
+    resolver: yupResolver(profileSchema) 
   });
 
   async function handleUserPhotoSelected(){
@@ -185,6 +210,8 @@ export function Profile(){
           <Button 
             title="Atualizar" 
             mt={4} 
+            onPress={handleSubmit(handleProfileUpdate)}
+            isLoading={isUpdating}
           />
         </Center>
       </ScrollView>
