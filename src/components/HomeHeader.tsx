@@ -8,9 +8,10 @@ import { api } from '@services/api';
 
 import defaulUserPhotoImg from '@assets/userPhotoDefault.png'; 
 
-import { UserPhoto } from "@components/UserPhoto";
+import { UserPhoto } from './UserPhoto';
 
 export function HomeHeader() {
+
   const { user, signOut } = useAuth();
 
   return (
@@ -21,11 +22,11 @@ export function HomeHeader() {
           ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` } 
           : defaulUserPhotoImg
         }
-        alt="Imagem do usuário"
         size={16}
+        alt="Imagem do usuário"
         mr={4}
       />
-
+      
       <VStack flex={1}>
         <Text color="gray.100" fontSize="md">
           Olá,
