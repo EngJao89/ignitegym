@@ -163,7 +163,7 @@ export function Profile() {
       setIsUpdating(false);
     }
   }
- 
+
   return (
     <VStack flex={1}>
       <ScreenHeader title='Perfil' />
