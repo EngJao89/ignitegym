@@ -21,7 +21,7 @@ type RouteParamsProps = {
   exerciseId: string;
 }
 
-export function Exercise(){
+export function Exercise() {
   const [sendingRegister, setSendingRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
@@ -88,16 +88,16 @@ export function Exercise(){
     fetchExerciseDetails();
   },[exerciseId])
 
-  return(
+  return (
     <VStack flex={1}>
       <VStack px={8} bg="gray.600" pt={12}>
         <TouchableOpacity onPress={handleGoBack}>
-        <Icon 
-          as={Feather}
-          name="arrow-left"
-          color="green.500"
-          size={6}
-        />
+          <Icon 
+            as={Feather}
+            name="arrow-left"
+            color="green.500"
+            size={6}
+          />
         </TouchableOpacity>
 
         <HStack justifyContent="space-between" mt={4} mb={8} alignItems="center">
@@ -140,7 +140,7 @@ export function Exercise(){
 
               <HStack>
                 <RepetitionsSvg />
-
+                
                 <Text color="gray.200" ml="2">
                   {exercise.repetitions} repetições
                 </Text>
@@ -156,5 +156,5 @@ export function Exercise(){
         </VStack>
       }
     </VStack>
-  )
+  );
 }
