@@ -8,7 +8,7 @@ import { UserDTO } from "@dtos/UserDTO";
 
 export type AuthContextDataProps = {
   user: UserDTO;
-  signIn: (email: string, password: string) => Promise<void>;
+  singIn: (email: string, password: string) => Promise<void>;
   updateUserProfile: (userUpdated: UserDTO) => Promise<void>;
   signOut: () => Promise<void>;
   isLoadingUserStorageData: boolean;
@@ -20,13 +20,14 @@ type AuthContextProviderProps = {
 
 export const AuthContext = createContext<AuthContextDataProps>({} as AuthContextDataProps);
 
-export function AuthContextProvider({ children }: AuthContextProviderProps){
+export function AuthContextProvider({ children }: AuthContextProviderProps)  {
+
   const [user, setUser] = useState<UserDTO>({} as UserDTO);
-  const [isLoadingUserStorageData, setIsLoadingUserStorageData] = useState(true);
+  const [isLoadingUserStorageData, setIsLoadingUserStorageData] = useState(true); 
 
   async function userAndTokenUpdate(userData: UserDTO, token: string) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+      
     setUser(userData);
   }
 
@@ -43,7 +44,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps){
     }
   }
 
-  async function signIn(email: string, password: string) {
+  async function singIn(email: string, password: string) {
     try {
       const { data } = await api.post('/sessions', { email, password });
 
@@ -85,7 +86,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps){
       setIsLoadingUserStorageData(true);
 
       const userLogged = await storageUserGet();
-      const token  = await storageAuthTokenGet();
+      const { token } = await storageAuthTokenGet();
       
       if(token && userLogged) {
         userAndTokenUpdate(userLogged, token);
@@ -112,7 +113,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps){
   return (
     <AuthContext.Provider value={{ 
       user, 
-      signIn,
+      singIn,
       updateUserProfile,
       signOut,
       isLoadingUserStorageData
