@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 
 import { AppError } from "@utils/AppError";
-import { storageAuthTokenGet } from "@storage/storageAuthToken";
+import { storageAuthTokenGet, storageAuthTokenSave } from "@storage/storageAuthToken";
 
 type SignOut = () => void;
 
@@ -15,7 +15,7 @@ type APIInstanceProps = AxiosInstance & {
 }
 
 const api = axios.create({
-  baseURL: 'http://192.168.18.5:3333'
+  baseURL: 'http://192.168.100.30:3333',
 }) as APIInstanceProps;
 
 let failedQueued: Array<PromiseType> = [];
@@ -49,21 +49,55 @@ api.registerInterceptTokenManager = singOut => {
         }
 
         isRefreshing = true
+
+        return new Promise(async (resolve, reject) => {
+          try {
+            const { data } = await api.post('/sessions/refresh-token', { refresh_token });
+            await storageAuthTokenSave({ token: data.token, refresh_token: data.refresh_token });
+
+            if(originalRequestConfig.data) {
+              originalRequestConfig.data = JSON.parse(originalRequestConfig.data);
+            }
+
+            originalRequestConfig.headers = { 'Authorization': `Bearer ${data.token}` };
+            api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+
+            failedQueued.forEach(request => {
+              request.onSuccess(data.token);
+            });
+
+            console.log("TOKEN ATUALIZADO");
+
+            resolve(api(originalRequestConfig));
+          } catch (error: any) {
+            console.log(error)
+            failedQueued.forEach(request => {
+              request.onFailure(error);
+            })
+
+            singOut();
+            reject(error);
+          } finally {
+            isRefreshing = false;
+            failedQueued = []
+          }
+        })
+
       }
 
       singOut();
+
     }
 
-
-    if(requestError.response && requestError.response.data){
-      return Promise.reject(new AppError(requestError.response.data.message));
+    if(requestError.response && requestError.response.data) {
+      return Promise.reject(new AppError(requestError.response.data.message))
     } else {
-      return Promise.reject(requestError);
+      return Promise.reject(requestError)
     }
   });
 
-  return () =>{
-    api.interceptors.response.eject(interceptTokenManager)
+  return () => {
+    api.interceptors.response.eject(interceptTokenManager);
   }
 }
 
