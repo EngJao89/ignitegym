@@ -5,8 +5,8 @@ type Props = IPressableProps & {
   isActive: boolean
 }
 
-export function Group({name, isActive, ...rest }: Props){
-  return(
+export function Group({ name, isActive, ...rest }: Props) {
+  return (
     <Pressable
       mr={3}
       w={24}
@@ -23,7 +23,7 @@ export function Group({name, isActive, ...rest }: Props){
       }}
       {...rest}
     >
-      <Text 
+      <Text
         color={isActive ? "green.500" : "gray.200"}
         textTransform="uppercase"
         fontSize="xs"
@@ -32,5 +32,5 @@ export function Group({name, isActive, ...rest }: Props){
         {name}
       </Text>
     </Pressable>
-  )
+  );
 }
