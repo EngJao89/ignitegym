@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import {  FlatList, Heading, HStack, Text, useToast, VStack } from 'native-base';
+import { FlatList, Heading, HStack, Text, useToast, VStack } from 'native-base';
 
 import { api } from '@services/api';
 import { AppError } from '@utils/AppError';
@@ -13,13 +13,12 @@ import { ExerciseCard } from '@components/ExerciseCard';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
 import { Loading } from '@components/Loading';
 
-export function Home(){
+export function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [groups, setGroups] = useState<string[]>([]);
   const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
-
-  const [groupSelected, setGroupSelected] = useState('costas');
+  const [groupSelected, setGroupSelected] = useState('antebraço');
 
   const toast = useToast();
   const navigation = useNavigation<AppNavigatorRoutesProps>();
@@ -68,26 +67,26 @@ export function Home(){
 
   useEffect(() => {
     fetchGroups();
-  },[]);
+  },[])
 
   useFocusEffect(
     useCallback(() => {
       fecthExercisesByGroup()
     },[groupSelected])
-  );
+  )
 
-  return(
+  return (
     <VStack flex={1}>
       <HomeHeader />
 
       <FlatList 
         data={groups}
         keyExtractor={item => item}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <Group 
-          name={item}
-          isActive={groupSelected.toLocaleUpperCase() === item.toLocaleUpperCase()}
-          onPress={() => setGroupSelected(item)}
+            name={item}
+            isActive={groupSelected.toLocaleUpperCase() === item.toLocaleUpperCase()}
+            onPress={() => setGroupSelected(item)}
           />
         )}
         horizontal
@@ -97,7 +96,6 @@ export function Home(){
         }}
         my={10}
         maxH={10}
-        minH={10}
       />
 
       {
@@ -131,5 +129,5 @@ export function Home(){
         </VStack>
       }
     </VStack>
-  )
+  );
 }
